@@ -68,8 +68,8 @@ def check_connection():
 def delFile():
     global uploadList
     for i in uploadList:
-        if(os.path.isfile(r'/home/pi/Desktop/New/'+i)):
-            os.remove(r'/home/pi/Desktop/New/'+i)
+        if(os.path.isfile(r'/home/pi/New/'+i)):
+            os.remove(r'/home/pi/New/'+i)
             print(i+' file removed')
     uploadList=[]
     print(uploadList)
@@ -81,11 +81,11 @@ def upload():
     global uploadList
     try:
         for file in uploadList:
-            if os.path.isfile(r'/home/pi/Desktop/New/'+file):
+            if os.path.isfile(r'/home/pi/New/'+file):
                 s3=boto3.client('s3')
                 print('uploading  '+file)
                 s3.upload_file(file,"pirecordings",file[:10]+'/'+file,ExtraArgs={'ACL':'public-read'})
-                os.remove(r'/home/pi/Desktop/New/'+file)
+                os.remove(r'/home/pi/New/'+file)
         uploadList=[]
     except Exception as e:
         print('error'+str(e))
@@ -99,7 +99,7 @@ def checkInternet():
     if check_connection():
         # upload files in folder
         uploadList=[]
-        for filename in os.listdir(r'/home/pi/Desktop/New'):
+        for filename in os.listdir(r'/home/pi/New'):
             if filename.endswith(".mp4"): 
                 print(filename)
                 uploadList.append(filename)
